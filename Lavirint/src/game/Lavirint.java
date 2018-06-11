@@ -33,10 +33,12 @@ import javafx.stage.Stage;
 import objects.Circle;
 import objects.Coin;
 import objects.Enemy;
+import objects.Flag;
 import objects.MazeObject;
 import objects.Protagonist;
 import objects.Ground;
 import objects.Projectile;
+import objects.Protagonist.Direction;
 import objects.Sat;
 import objects.Wall;
 import state.StandState;
@@ -74,6 +76,7 @@ public class Lavirint extends Application {
     private List<Enemy> enemies = new ArrayList<>();
     private List<Projectile> projectiles = new ArrayList<>();
     private ArrayList<ArrayList<MazeObject>> all_objects = new ArrayList<>();
+    private Flag flag;
 
     private static Ground ground;
     private static final int CAMERA_MIN_ZOOM_OUT = -2000;
@@ -105,7 +108,7 @@ public class Lavirint extends Application {
                 acceleration *= -1;
             }
             if (!gameover) {
-                time -= passed/10;
+                time -= passed / 10;
                 if (time < 0) {
                     time = 0;
                     gameover = true;
@@ -127,6 +130,7 @@ public class Lavirint extends Application {
     }
 
     private void checkForCollisions() {
+
         Iterator<Wall> iterator_w = walls.iterator();
         while (iterator_w.hasNext()) {
             Wall wall = iterator_w.next();
@@ -213,6 +217,14 @@ public class Lavirint extends Application {
                 }
             }
 
+        }
+
+        if (flag.getBoundsInParent().intersects(protagonist.getBoundsInParent())) {
+            Direction dir = protagonist.getDirection();
+            if (dir.toString().equals(Direction.UP.toString()) && !gameover) {
+                gameover = true;
+                gameOverText.setVisible(true);
+            }
         }
         protagonist.getPosition().setX(protagonist.getTranslateX());
         protagonist.getPosition().setY(protagonist.getTranslateY());
@@ -370,6 +382,12 @@ public class Lavirint extends Application {
                             mainSceneRoot.getChildren().add(e);
                             enemies.add(e);
                             break;
+                        case 'f':
+                        case 'F':
+                            flag = new Flag(position);
+                            mainSceneRoot.getChildren().add(flag);
+
+                            break;
                         default:
                             break;
                     }
@@ -503,6 +521,12 @@ public class Lavirint extends Application {
             case D:
                 d_pressed = true;
                 break;
+            case L:
+                if (flag != null) {
+                    flag.SwitchIsLightOn();
+                }
+                break;
+
             case DIGIT1:
                 followPlayer = !followPlayer;
                 fps = false;

@@ -13,7 +13,7 @@
             </extension>
         </buildExtensions>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
-            <name>RG Lab3 - Lavirint - skelet</name>
+            <name>Lavirint</name>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>

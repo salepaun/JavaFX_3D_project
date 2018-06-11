@@ -146,5 +146,6 @@ public abstract class Protagonist extends MazeObject {
     public void setRotated(double rotated) {
         this.rotated = rotated;
     }
+    
 
 }
